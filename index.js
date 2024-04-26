@@ -33,10 +33,16 @@ async function run() {
     const tourSpotsCollections = client.db("tourDB").collection('tour');
 
 
-    app.post('/spots', async (req, res)=> {
+    app.post('/spots', async (req, res) => {
       const tourSpots = req.body;
       const result = await tourSpotsCollections.insertOne(tourSpots);
       res.send(result);
+    })
+    app.get('/spots', async(req, res) => {
+      const spots = req.body;
+      const cursor = tourSpotsCollections.find(spots);
+      const result = await cursor.toArray();
+      res.send(result)
     })
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
@@ -50,9 +56,9 @@ run().catch(console.dir);
 
 
 app.get('/', async (req, res) => {
-    res.send('world tour spots is running');
+  res.send('world tour spots is running');
 })
 
-app.listen(port, ()=> {
-    console.log(`my world tour server is running on port ${port}`);
+app.listen(port, () => {
+  console.log(`my world tour server is running on port ${port}`);
 })
