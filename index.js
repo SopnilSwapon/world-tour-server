@@ -32,7 +32,6 @@ async function run() {
     await client.connect();
     const tourSpotsCollections = client.db("tourDB").collection('tour');
 
-
     app.post('/spots', async (req, res) => {
       const tourSpots = req.body;
       const result = await tourSpotsCollections.insertOne(tourSpots);
@@ -49,6 +48,9 @@ async function run() {
       const query = {_id: new ObjectId(id)}
       const result = await tourSpotsCollections.findOne(query);
       res.send(result)
+    });
+    app.get('/myList/:email', async (req, res) => {
+      const result = await tourSpotsCollections.find({email: req.params.email}).toArray();
     })
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
