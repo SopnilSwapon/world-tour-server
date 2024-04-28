@@ -51,7 +51,22 @@ async function run() {
     });
     app.get('/myList/:email', async (req, res) => {
       const result = await tourSpotsCollections.find({email: req.params.email}).toArray();
-    })
+      res.send(result)
+    });
+    
+  app.put('/spots/:id', async(req, res) =>{
+    const id = req.params.id;
+    const spot = req.body;
+    const query = {_id: new ObjectId(id)}
+    const options = { upsert: true };
+    const updateSpot = {
+        $set: {
+          country: spot.country, spots: spot.spots, location: spot.location, description: spot.description, cost: spot.cost, session: spot.session, time: spot.time, visitors: spot.visitors, photo: spot.photo
+        }
+      };
+      const result = await tourSpotsCollections.updateOne(query, updateSpot, options)
+      res.send(result)
+  })
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
