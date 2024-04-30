@@ -34,10 +34,15 @@ async function run() {
       const result = await tourSpotsCollections.insertOne(tourSpots);
       res.send(result);
     })
-
+  // __________________get country spot_____________________//
     app.get('/countries', async (req, res) => {
       const countriesSpots = req.body;
       const result = await tourCountriesCollection.find(countriesSpots).toArray();
+      res.send(result)
+    })
+    // ________________Get spots According to country name______________//
+    app.get('/spots/:country', async(req, res) => {
+      const result = await tourSpotsCollections.find({country: req.params.country}).toArray();
       res.send(result)
     })
     app.get('/spots', async(req, res) => {
