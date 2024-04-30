@@ -41,10 +41,12 @@ async function run() {
       res.send(result)
     })
     // ________________Get spots According to country name______________//
-    app.get('/spots/:country', async(req, res) => {
-      const result = await tourSpotsCollections.find({country: req.params.country}).toArray();
-      res.send(result)
-    })
+   app.get('/spots/:country', async (req, res) => {
+    const country = req.params.country;
+    const query = {country: country}
+    const result = await tourSpotsCollections.find(query).toArray();
+    res.send(result);
+   })
     app.get('/spots', async(req, res) => {
       const spots = req.body;
       const cursor = tourSpotsCollections.find(spots);
